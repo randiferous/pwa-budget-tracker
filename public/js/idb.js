@@ -2,21 +2,21 @@ let db;
 const request = indexedDB.open('budget_tracker', 1);
 
 
-request.onupgradeneeded = function(event) {
+request.onupgradeneeded = function (event) {
     const db = event.target.result;
     db.createObjectStore('new_moneymove', { autoIncrement: true })
 }
 
 
-request.onsuccess = function(event) {
+request.onsuccess = function (event) {
 
-    db.event.target.result;
+    db = event.target.result;
     if (navigator.onLine) {
         uploadTransaction();
     }
 };
 
-request.onerror = function(event) {
+request.onerror = function (event) {
     console.log(event.target.errorCode);
 }
 
@@ -32,9 +32,9 @@ function uploadTransaction() {
     const budgetObjectStore = transaction.objectStore('new_moneymove');
     const getAll = budgetObjectStore.getAll();
 
-    getAll.onsuccess = function() {
+    getAll.onsuccess = function () {
         if (getAll.result.length > 0) {
-            fetch('/api/transaction/bulk', {
+            fetch('/api/transaction', {
                 method: 'POST',
                 body: JSON.stringify(getAll.result),
                 headers: {
@@ -42,19 +42,19 @@ function uploadTransaction() {
                     'Content-Type': 'application/json'
                 }
             })
-            .then(response => response.json())
-            .then(serverResponse => {
-                if (serverResponse.message) {
-                    throw new Error(serverResponse);
-                }
+                .then(response => response.json())
+                .then(serverResponse => {
+                    if (serverResponse.message) {
+                        throw new Error(serverResponse);
+                    }
 
-                const transaction = db.transaction(['new_moneymove'], 'readwrite');
-                const budgetObjectStore = transaction.objectStore('new_moneymove');
-                budgetObjectStore.clear();
-            })
-            .catch(err => {
-                console.log(err)
-            });
+                    const transaction = db.transaction(['new_moneymove'], 'readwrite');
+                    const budgetObjectStore = transaction.objectStore('new_moneymove');
+                    budgetObjectStore.clear();
+                })
+                .catch(err => {
+                    console.log(err)
+                });
         }
     };
 }
