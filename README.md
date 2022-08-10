@@ -29,3 +29,5 @@ In order to use this application, click on the following link: https://pacific-l
 In order to use the application as a PWA, you will need to first open the link and then click on the arrow (or plus) symbol on the right side of the URL bar.  That button should allow you to install the application directly onto your homepage.
 
 ## Reflection
+
+This project was tricky because it involved using a different skillset than usual.  Offline functionality is a relatively new concept and therefore requires a new train of thought. Regardless, it was cool to learn about a different way of storing information locally, as IndexedDB appears to be much more useful than Local Storage.  It was also very cool to create my own PWA, which I can now use directly from my desktop!
